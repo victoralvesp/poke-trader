@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using PokeTrader.Core.Filters.Abstractions;
 
 namespace PokeTrader.Core.Trader.Abstractions

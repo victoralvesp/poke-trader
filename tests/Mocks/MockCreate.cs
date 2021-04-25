@@ -6,6 +6,8 @@ using System.Linq;
 using PokeTrader.Core.Trader.Models;
 using System;
 using PokeTrader.Core.Filters.Abstractions;
+using PokeTrader.Core.Repositories.Abstractions;
+using System.Threading.Tasks;
 
 namespace PokeTrader.Tests.Mocks
 {
@@ -23,6 +25,23 @@ namespace PokeTrader.Tests.Mocks
             mock.SetReturnsDefault(Enumerable.Empty<Trade>());
 
             return obj;
+        }
+
+        internal static IHistoryRepository<U> ValidHistoryRepo<U>()
+            where U : notnull
+        {
+            var repo = Mock.Of<IHistoryRepository<U>>();
+            var list = new List<U>();
+            var mock = Mock.Get(repo);
+
+
+            mock.Setup(rp => rp.Get())
+                .ReturnsAsync(list.AsEnumerable());
+            mock.Setup(rp => rp.Add(It.IsAny<U[]>()))
+                .Callback<U[]>(u => list.AddRange(u))
+                .Returns(Task.CompletedTask);
+    
+            return repo;
         }
 
         internal static ICollectionMeasurer<T> CreateValidMeasure<T>()
@@ -114,7 +133,7 @@ namespace PokeTrader.Tests.Mocks
         => new()
         {
             Info = RandomTradeInfo(),
-            TradeDate = DateTime.FromOADate(_random.Next())
+            TradeDate = DateTime.FromBinary(_random.Next())
         };
 
         public static ICollectionMeasurer<T> NullMeasure<T>()
@@ -151,7 +170,7 @@ namespace PokeTrader.Tests.Mocks
             mock.SetReturnsDefault(_random.NextDouble());
             // mock.SetReturnsDefault(_random.NextBytes(byteBuffer));
             mock.SetReturnsDefault(RandomString());
-            mock.SetReturnsDefault(DateTime.FromOADate(_random.Next()));
+            mock.SetReturnsDefault(DateTime.FromBinary(_random.Next()));
 
             return obj;
         }
