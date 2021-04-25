@@ -114,10 +114,11 @@ namespace PokeTrader.Tests.Mocks
             TradeOffer = new[] { RandomPokemon() }
         };
 
-        private static Pokemon RandomPokemon()
+        public static Pokemon RandomPokemon()
         => new()
         {
             Id = _random.Next(),
+            BaseExperience = _random.Next(0, 100)
         };
 
         public static string RandomString() => "Random";
@@ -154,7 +155,7 @@ namespace PokeTrader.Tests.Mocks
 
             var mock = Mock.Get(obj);
 
-            mock.SetReturnsDefault<IEnumerable<T>>(Enumerable.Empty<T>());
+            mock.SetReturnsDefault(Enumerable.Empty<T>());
 
             return obj;
         }
@@ -162,18 +163,19 @@ namespace PokeTrader.Tests.Mocks
         public static T Random<T>()
         where T : class
         {
-            var obj = Mock.Of<T>(MockBehavior.Loose);
-
-            var mock = Mock.Get(obj);
-            var byteBuffer = new byte[10];
-            mock.SetReturnsDefault(_random.Next());
+            var mock = new Mock<T>();
+            //var byteBuffer = new byte[10];
+            var value = _random.Next();
+            mock.SetReturnsDefault(value);
             mock.SetReturnsDefault(_random.NextDouble());
             // mock.SetReturnsDefault(_random.NextBytes(byteBuffer));
             mock.SetReturnsDefault(RandomString());
             mock.SetReturnsDefault(DateTime.FromBinary(_random.Next()));
 
-            return obj;
+            return mock.Object;
         }
+
+        
 
 
 

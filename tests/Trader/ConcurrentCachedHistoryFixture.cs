@@ -15,7 +15,6 @@ namespace PokeTrader.Tests
     {
         IHistory<Trade> _history = new ConcurrentCachedHistory<Trade>(MockCreate.ValidHistoryRepo<Trade>());
         protected override IHistory<Trade> History => _history;
-
         
         [Test(Description = "Tests technical requirement T.3")]
         public async Task HistoryIsSynchronizedAfterCacheTime()
