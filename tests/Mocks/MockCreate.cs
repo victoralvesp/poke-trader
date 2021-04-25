@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PokeTrader.Core.Trader.Models;
 using System;
+using PokeTrader.Core.Filters.Abstractions;
 
 namespace PokeTrader.Tests.Mocks
 {
@@ -17,11 +18,44 @@ namespace PokeTrader.Tests.Mocks
 
             var mock = Mock.Get(obj);
 
-            mock.SetReturnsDefault<Trade>(InvalidTrade());
-            mock.SetReturnsDefault<TradeInfo>(InvalidTradeInfo());
-            mock.SetReturnsDefault<IEnumerable<Trade>>(Enumerable.Empty<Trade>());
+            mock.SetReturnsDefault(InvalidTrade());
+            mock.SetReturnsDefault(InvalidTradeInfo());
+            mock.SetReturnsDefault(Enumerable.Empty<Trade>());
 
             return obj;
+        }
+
+        internal static ICollectionMeasurer<T> CreateValidMeasure<T>()
+        where T : notnull
+        {
+            var measure = NullMeasure<T>();
+
+            var mock = Mock.Get(measure);
+            mock.Name = $"{typeof(ICollectionMeasurer<>).Name} - {_random.Next(0, 100)}";
+
+            mock.Setup(msr => msr.Measure(It.IsAny<T[]>()))
+                .Returns<T[]>(tarr => tarr.Sum(t => t.ToString()?.Length ?? 0));
+
+            return measure;
+        }
+        internal static IHistory<T> CreateValidHistory<T>()
+        where T : notnull
+        {
+            var history = NullHistory<T>();
+
+            var mock = Mock.Get(history);
+            var historyList = new List<T>();
+            mock.Name = $"{typeof(IHistory<>).Name} - {_random.Next(0, 100)}";
+            mock.Setup(hist => hist.Add(It.IsAny<T>()))
+                .Callback<T>(t => historyList.Add(t));
+
+            mock.Setup(hist => hist.Get())
+                .Returns(historyList.AsEnumerable());
+
+            mock.Setup(hist => hist.Get(It.IsAny<IFilter<T>>()))
+                .Returns<IFilter<T>>(filter => historyList.AsEnumerable().Where(t => filter.Pass(t)));
+
+            return history;
         }
 
         private static TradeInfo InvalidTradeInfo()

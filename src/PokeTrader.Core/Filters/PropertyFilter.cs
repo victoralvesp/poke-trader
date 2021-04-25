@@ -13,7 +13,7 @@ namespace PokeTrader.Core.Filters
             _passingFuncition = passingFuncition;
         }
 
-        public bool PassFilter(T target)
+        public bool Pass(T target)
         {
             return _passingFuncition(target);
         }
