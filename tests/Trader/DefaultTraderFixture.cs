@@ -11,6 +11,10 @@ using static PokeTrader.Tests.Mocks.MockCreate;
 namespace PokeTrader.Tests
 {
 
+    // H.1 - IHistory always returns non null values
+    // H.2 - IHistory persists history values
+    // H.3 - ICollectionMeasurer always returns non null values 
+    [TestFixture]
     public class DefaultTraderFixture : ITraderFixture
     {
 

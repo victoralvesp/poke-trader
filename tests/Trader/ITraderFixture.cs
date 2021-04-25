@@ -20,7 +20,7 @@ namespace PokeTrader.Tests
         protected abstract ITrader Trader { get; }
 
 #region SanityChecks
-        [Test(Description = "Tests D.1 Requirement")]
+        [Test(Description = "Tests domain requirement D.1")]
         public void ReturnsSomeValidFairnessResult()
         {
             // Arrange
@@ -38,7 +38,7 @@ namespace PokeTrader.Tests
         }
         
         
-        [Test(Description = "Tests D.1 Requirement")]
+        [Test(Description = "Tests domain requirement D.1")]
         public void ReturnedFairnessResultRefersToFirstTrader()
         {
             // Arrange
@@ -53,7 +53,7 @@ namespace PokeTrader.Tests
                                     .And.Property(nameof(TradeInfo.First)).EqualTo(firstTrader)
                                     .And.Property(nameof(TradeInfo.Second)).EqualTo(secondTrader));
         }
-        [Test(Description = "Tests D.1 Requirement")]
+        [Test(Description = "Tests domain requirement D.1")]
         public void ReturnedFairnessResultRefersToSecondTrader()
         {
             // Arrange
@@ -86,7 +86,7 @@ namespace PokeTrader.Tests
                                         .AtLeast(before).And.AtMost(after));
         }
 
-        [Test(Description = "Tests D.3 Requirement")]
+        [Test(Description = "Tests domain requirement D.3")]
         public void ReturnsAllTradesMade()
         {
             // Arrange
@@ -104,7 +104,7 @@ namespace PokeTrader.Tests
 
         }
         
-        [Test(Description = "Tests D.4 Requirement")]
+        [Test(Description = "Tests domain requirement D.4")]
         public void ReturnsAllTradesMadeByPlayerAndNotTradesMadeByOtherPlayers()
         {
             // Arrange
@@ -123,7 +123,7 @@ namespace PokeTrader.Tests
             CollectionAssert.IsNotSupersetOf(history, new[] { tradeWithOtherTrader });
         }
 
-        [Test(Description = "Tests D.5 Requirement")]
+        [Test(Description = "Tests domain requirement D.5")]
         public void TradeRefersToInfo()
         {
             // Arrange

@@ -38,6 +38,20 @@ namespace PokeTrader.Tests.Mocks
 
             return measure;
         }
+
+        internal static IFilter<T> Filter<T>(Func<T, bool>? filterFunc = null)
+        where T : notnull
+        {
+            filterFunc ??= (_) => _random.Next(1, 10) <= 5;
+
+            var filter = Mock.Of<IFilter<T>>();
+
+            Mock.Get(filter).Setup(flt => flt.Pass(It.IsAny<T>()))
+                .Returns(filterFunc);
+
+            return filter;
+        }
+
         internal static IHistory<T> CreateValidHistory<T>()
         where T : notnull
         {
@@ -58,6 +72,14 @@ namespace PokeTrader.Tests.Mocks
             return history;
         }
 
+        private static TradeInfo RandomTradeInfo()
+        => new()
+        {
+            First = RandomTrader(),
+            Second = RandomTrader(),
+            TradeFairness = (TradeInfo.Fairness)_random.Next(0, 5)
+        };
+
         private static TradeInfo InvalidTradeInfo()
         => new()
         {
@@ -66,10 +88,10 @@ namespace PokeTrader.Tests.Mocks
             TradeFairness = TradeInfo.Fairness.InvalidTrade
         };
 
-        public static TradeParticipant RandomTrader() 
+        public static TradeParticipant RandomTrader()
         => new()
         {
-            Trader = new() { Name = RandomName() },
+            Trader = new() { Name = RandomString() },
             TradeOffer = new[] { RandomPokemon() }
         };
 
@@ -79,7 +101,7 @@ namespace PokeTrader.Tests.Mocks
             Id = _random.Next(),
         };
 
-        public static string RandomName() => "Random";
+        public static string RandomString() => "Random";
 
 
         private static Trade InvalidTrade()
@@ -87,6 +109,12 @@ namespace PokeTrader.Tests.Mocks
         {
             Info = InvalidTradeInfo(),
             TradeDate = DateTime.MinValue
+        };
+        public static Trade RandomTrade()
+        => new()
+        {
+            Info = RandomTradeInfo(),
+            TradeDate = DateTime.FromOADate(_random.Next())
         };
 
         public static ICollectionMeasurer<T> NullMeasure<T>()
@@ -112,6 +140,23 @@ namespace PokeTrader.Tests.Mocks
             return obj;
         }
 
-        
-    }   
+        public static T Random<T>()
+        where T : class
+        {
+            var obj = Mock.Of<T>(MockBehavior.Loose);
+
+            var mock = Mock.Get(obj);
+            var byteBuffer = new byte[10];
+            mock.SetReturnsDefault(_random.Next());
+            mock.SetReturnsDefault(_random.NextDouble());
+            // mock.SetReturnsDefault(_random.NextBytes(byteBuffer));
+            mock.SetReturnsDefault(RandomString());
+            mock.SetReturnsDefault(DateTime.FromOADate(_random.Next()));
+
+            return obj;
+        }
+
+
+
+    }
 }
