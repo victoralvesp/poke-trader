@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using PokeTrader.Core.Trader.Models;
 
+[assembly: InternalsVisibleToAttribute("PokeTrader.Tests")]
 namespace PokeTrader.Core.Trader.Abstractions
 {
     public interface ITrader

@@ -1,9 +1,12 @@
 using System;
 using NUnit.Framework;
+using PokeTrader.Core.Pokemons.Models;
 using PokeTrader.Core.Trader.Abstractions;
 using PokeTrader.Core.Trader.Models;
 
-namespace Tests
+using static PokeTrader.Tests.Mocks.MockCreate;
+
+namespace PokeTrader.Tests
 {
 
     /// H.1 - All trade participants are not null and all trade participants information are not null    
@@ -14,13 +17,7 @@ namespace Tests
     /// D.5 - Check result can be used to MakeTrade
     public abstract class ITraderFixture
     {
-        protected abstract ITrader _trader { get; set; }
-
-        [OneTimeSetUp]
-        public void Setup()
-        {
-            _trader = InitializeTrader();
-        }
+        protected abstract ITrader Trader { get; }
 
 #region SanityChecks
         [Test(Description = "Tests D.1 Requirement")]
@@ -31,11 +28,11 @@ namespace Tests
 
 
             // Act
-            var fairness = _trader.Check(firstTrader, secondTrader);
+            var fairness = Trader.Check(firstTrader, secondTrader);
 
             // Assert
             Assert.That(fairness, Is.InstanceOf<TradeInfo>()
-                                    .And.Property(nameof(TradeInfo.Fairness))
+                                    .And.Property(nameof(TradeInfo.TradeFairness))
                                     .Not.EqualTo(TradeInfo.Fairness.InvalidTrade)
                                     );
         }
@@ -49,7 +46,7 @@ namespace Tests
 
 
             // Act
-            var fairness = _trader.Check(firstTrader, secondTrader);
+            var fairness = Trader.Check(firstTrader, secondTrader);
 
             // Assert
             Assert.That(fairness, Is.InstanceOf<TradeInfo>()
@@ -64,7 +61,7 @@ namespace Tests
 
 
             // Act
-            var fairness = _trader.Check(firstTrader, secondTrader);
+            var fairness = Trader.Check(firstTrader, secondTrader);
 
             // Assert
             Assert.That(fairness, Is.InstanceOf<TradeInfo>()
@@ -79,7 +76,7 @@ namespace Tests
 
 
             // Act
-            var trade = _trader.MakeTrade(firstTrader, secondTrader);
+            var trade = Trader.MakeTrade(firstTrader, secondTrader);
             var after = DateTime.Now;
 
 
@@ -99,7 +96,7 @@ namespace Tests
             var trade4 = MakeRandomTrade();
 
             // Act
-            var history = _trader.GetHistory();
+            var history = Trader.GetHistory();
 
 
             // Assert
@@ -111,7 +108,7 @@ namespace Tests
         public void ReturnsAllTradesMadeByPlayerAndNotTradesMadeByOtherPlayers()
         {
             // Arrange
-            var firstTrader = DefineRandomTrader();
+            var firstTrader = RandomTrader();
             var trade1 = MakeRandomTrade(firstTrader);
             var trade2 = MakeRandomTrade(firstTrader);
             var trade3 = MakeRandomTrade(firstTrader);
@@ -119,7 +116,7 @@ namespace Tests
             var tradeWithOtherTrader = MakeRandomTrade();
 
             // Act
-            var history = _trader.GetHistory(firstTrader.Trader);
+            var history = Trader.GetHistory(firstTrader.Trader);
 
             // Assert
             CollectionAssert.IsSupersetOf(history, new[] { trade1, trade2, trade3, trade4 });
@@ -131,10 +128,10 @@ namespace Tests
         {
             // Arrange
             DefineRandomTraders(out var firstTrader, out var secondTrader);
-            var checkResult = _trader.Check(firstTrader, secondTrader);
+            var checkResult = Trader.Check(firstTrader, secondTrader);
 
             // Act
-            var fairness = _trader.MakeTrade(checkResult);
+            var fairness = Trader.MakeTrade(checkResult);
 
             // Assert
             Assert.That(fairness, Is.InstanceOf<Trade>()
@@ -143,34 +140,19 @@ namespace Tests
         }
 #endregion
 
-        protected static string RandomName()
-        {
-            return "Random";
-        }
-
+ 
         protected static void DefineRandomTraders(out TradeParticipant firstTrader, out TradeParticipant secondTrader)
         {
-            firstTrader = DefineRandomTrader();
-            secondTrader = DefineRandomTrader();
+            firstTrader = RandomTrader();
+            secondTrader = RandomTrader();
         }
-
-        protected static TradeParticipant DefineRandomTrader()
-        {
-            return new()
-            {
-                Trader = new(tradeOrder: 1) { Name = RandomName() },
-                TradeOffer = new()
-            };
-        }
-
 
         protected virtual Trade MakeRandomTrade(TradeParticipant? firstTrader = null, TradeParticipant? secondTrader = null)
         {
-            firstTrader ??= DefineRandomTrader();
-            secondTrader ??= DefineRandomTrader();
-            return _trader.MakeTrade(firstTrader, secondTrader);
+            firstTrader ??= RandomTrader();
+            secondTrader ??= RandomTrader();
+            return Trader.MakeTrade(firstTrader, secondTrader);
         }
 
-        protected abstract ITrader InitializeTrader();
     }
 }
