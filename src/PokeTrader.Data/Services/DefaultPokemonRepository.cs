@@ -22,8 +22,9 @@ namespace PokeTrader.Data.Services
         public async Task<IEnumerable<string>> GetNames(int quantity, int pageOffset = 0)
         {
             var namedApiResourceList = await _client.GetNamedResourcePageAsync<PokeApiNet.Pokemon>(quantity, offset: quantity * pageOffset);
-            return from pokeApi in namedApiResourceList.Results
-                   select pokeApi.Name;
+            var names = from pokeApi in namedApiResourceList.Results
+                        select pokeApi.Name;
+            return names;
         }
 
         public async Task<Pokemon> Get(int id)

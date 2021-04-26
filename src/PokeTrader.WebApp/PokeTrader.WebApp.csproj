@@ -22,9 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PokeTrader.Core\PokeTrader.Core.csproj" />
-    <ProjectReference Include="..\..\PokeTrader.Data\PokeTrader.Data.csproj" />
-    <ProjectReference Include="..\..\PokeTrader.DTO\PokeTrader.DTO.csproj" />
+    <ProjectReference Include="..\PokeTrader.Core\PokeTrader.Core.csproj" />
+    <ProjectReference Include="..\PokeTrader.Data\PokeTrader.Data.csproj" />
+    <ProjectReference Include="..\PokeTrader.DTO\PokeTrader.DTO.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

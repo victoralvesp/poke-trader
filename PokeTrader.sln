@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokeTrader.Data", "src\Poke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokeTrader.DTO", "src\PokeTrader.DTO\PokeTrader.DTO.csproj", "{6BF1D73A-264C-4044-8B99-FA498D77A954}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokeTrader.WebApp", "src\PokeTrader.WebApp\PokeTrader.WebApp\PokeTrader.WebApp.csproj", "{2DF15782-38DC-4046-93D9-2D0913C1711A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokeTrader.WebApp", "src\PokeTrader.WebApp\PokeTrader.WebApp.csproj", "{17FFB988-7AE0-48B7-9D3E-C70E5D7DC0B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,18 +71,18 @@ Global
 		{6BF1D73A-264C-4044-8B99-FA498D77A954}.Release|x64.Build.0 = Release|Any CPU
 		{6BF1D73A-264C-4044-8B99-FA498D77A954}.Release|x86.ActiveCfg = Release|Any CPU
 		{6BF1D73A-264C-4044-8B99-FA498D77A954}.Release|x86.Build.0 = Release|Any CPU
-		{2DF15782-38DC-4046-93D9-2D0913C1711A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DF15782-38DC-4046-93D9-2D0913C1711A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DF15782-38DC-4046-93D9-2D0913C1711A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{2DF15782-38DC-4046-93D9-2D0913C1711A}.Debug|x64.Build.0 = Debug|Any CPU
-		{2DF15782-38DC-4046-93D9-2D0913C1711A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{2DF15782-38DC-4046-93D9-2D0913C1711A}.Debug|x86.Build.0 = Debug|Any CPU
-		{2DF15782-38DC-4046-93D9-2D0913C1711A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DF15782-38DC-4046-93D9-2D0913C1711A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2DF15782-38DC-4046-93D9-2D0913C1711A}.Release|x64.ActiveCfg = Release|Any CPU
-		{2DF15782-38DC-4046-93D9-2D0913C1711A}.Release|x64.Build.0 = Release|Any CPU
-		{2DF15782-38DC-4046-93D9-2D0913C1711A}.Release|x86.ActiveCfg = Release|Any CPU
-		{2DF15782-38DC-4046-93D9-2D0913C1711A}.Release|x86.Build.0 = Release|Any CPU
+		{17FFB988-7AE0-48B7-9D3E-C70E5D7DC0B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17FFB988-7AE0-48B7-9D3E-C70E5D7DC0B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17FFB988-7AE0-48B7-9D3E-C70E5D7DC0B5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{17FFB988-7AE0-48B7-9D3E-C70E5D7DC0B5}.Debug|x64.Build.0 = Debug|Any CPU
+		{17FFB988-7AE0-48B7-9D3E-C70E5D7DC0B5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{17FFB988-7AE0-48B7-9D3E-C70E5D7DC0B5}.Debug|x86.Build.0 = Debug|Any CPU
+		{17FFB988-7AE0-48B7-9D3E-C70E5D7DC0B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17FFB988-7AE0-48B7-9D3E-C70E5D7DC0B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17FFB988-7AE0-48B7-9D3E-C70E5D7DC0B5}.Release|x64.ActiveCfg = Release|Any CPU
+		{17FFB988-7AE0-48B7-9D3E-C70E5D7DC0B5}.Release|x64.Build.0 = Release|Any CPU
+		{17FFB988-7AE0-48B7-9D3E-C70E5D7DC0B5}.Release|x86.ActiveCfg = Release|Any CPU
+		{17FFB988-7AE0-48B7-9D3E-C70E5D7DC0B5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

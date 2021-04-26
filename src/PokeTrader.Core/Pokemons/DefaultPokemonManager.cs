@@ -34,9 +34,10 @@ namespace PokeTrader.Core.Pokemons.Manager
 
             return pokemon;
         }
- 
-        public Task<IEnumerable<string>> GetNames(int pageOffset = 0) => _repo.GetNames(PAGE_SIZE, pageOffset);
 
-
+        public Task<IEnumerable<string>> GetNames(int pageOffset = 0)
+        {
+            return _repo.GetNames(PAGE_SIZE, pageOffset);
+        }
     }
 }
