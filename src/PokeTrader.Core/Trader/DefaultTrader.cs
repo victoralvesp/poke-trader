@@ -13,7 +13,7 @@ namespace PokeTrader.Core.Trader
         ICollectionMeasurer<Pokemon> _comparer;
         IHistory<Trade> _history;
 
-        internal DefaultTrader(ICollectionMeasurer<Pokemon> comparer, IHistory<Trade> manager)
+        public DefaultTrader(ICollectionMeasurer<Pokemon> comparer, IHistory<Trade> manager)
         {
             _comparer = comparer;
             _history = manager;

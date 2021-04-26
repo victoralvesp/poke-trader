@@ -12,5 +12,7 @@ namespace PokeTrader.Dto.Extensions
         public static IEnumerable<T> ToModel<T>(this IEnumerable<IDto<T>> dtos)
             => from dto in dtos
                select dto.ToModel();
+
+
     }
 }

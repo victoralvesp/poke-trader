@@ -12,9 +12,14 @@ namespace PokeTrader.Data.Services
 {
     public class DefaultPokemonRepository : IPokemonRepository
     {
-        PokeApiClient _client = new();
+        PokeApiClient _client;
 
-        public async Task<IEnumerable<string>> GetPokemonNames(int quantity, int pageOffset = 0)
+        public DefaultPokemonRepository(PokeApiClient client)
+        {
+            _client = client;
+        }
+
+        public async Task<IEnumerable<string>> GetNames(int quantity, int pageOffset = 0)
         {
             var namedApiResourceList = await _client.GetNamedResourcePageAsync<PokeApiNet.Pokemon>(quantity, offset: quantity * pageOffset);
             return from pokeApi in namedApiResourceList.Results

@@ -72,7 +72,7 @@ namespace PokeTrader.Core.Trader
         public IEnumerable<T> Get(IFilter<T> trade)
         {
             return _cache.ToArray()
-                           .Where(trade.Pass);
+                         .Where(trade.Pass);
         }
 
         public void Dispose()
