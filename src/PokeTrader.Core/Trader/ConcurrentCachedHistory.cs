@@ -42,7 +42,7 @@ namespace PokeTrader.Core.Trader
                     _syncSubject.OnNext(false);
 
                     await _repo.Add(notPersisted);
-                    _cache = new ConcurrentBag<T>(_cache.ToArray().Concat(notCached).ToArray());
+                    _cache = new(_cache.ToArray().Concat(notCached).ToArray());
                 }
                 _syncSubject.OnNext(true);
                 await Task.Delay(_cacheTime);
