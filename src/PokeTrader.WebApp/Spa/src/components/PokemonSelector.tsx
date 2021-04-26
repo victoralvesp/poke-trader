@@ -27,7 +27,11 @@ export class PokemonSelector extends React.Component {
     handleSelectChange(eventValue: any, params: any): void {
         if (typeof params === typeof undefined)
             return;
-        let { action, option, removedValue, name } = params;
+        if (this.selectedPokemon.length == 6) {
+            this.showErrorMessage();
+            return;
+        }
+        let { action, option, removedValue } = params;
         if (action === "select-option" && typeof option !== typeof undefined) {
             let { label } = option;
             if (typeof label !== typeof undefined) {
@@ -35,7 +39,7 @@ export class PokemonSelector extends React.Component {
                 this.pokemonService.findPokemonByName(label);
             }
         }
-        else if (action === "deselect-option" && typeof removedValue !== typeof undefined) {
+        else if (action === "remove-value" && typeof removedValue !== typeof undefined) {
             let { label } = removedValue;
             if (typeof label !== typeof undefined) {
                 const index = this.selectedPokemon.indexOf(label, 0);
@@ -44,9 +48,19 @@ export class PokemonSelector extends React.Component {
                     this.selectedPokemon = [...this.selectedPokemon];
                 }
             }
+            console.log(label);
         }
+        console.log("action");
+        console.log(action);
+        console.log("selected");
+        console.log(this.selectedPokemon);
 
-    };
+
+    }
+    showErrorMessage() {
+        console.log("Maximum  number of elements");
+    }
+
     getPokemonOptions(inputValue: string): Promise<any> {
         
         return new Promise(resolve => {
@@ -65,6 +79,7 @@ export class PokemonSelector extends React.Component {
         return (
             <div>
                 <AsyncSelect
+                    
                     loadOptions={this.getPokemonOptions.bind(this)}
                     defaultOptions
                     isMulti

@@ -52,6 +52,8 @@ export class PokemonService {
             const response = await fetch(`pokemon/${pokemonName}`);
             pokemon = await response.json() as PokemonApi;
             this.loadedPokemons = [... this.loadedPokemons, pokemon];
+            console.log("loadedPokemons");
+            console.log(this.loadedPokemons);
         }
         else {
             pokemon = undefPokemon as PokemonApi;
