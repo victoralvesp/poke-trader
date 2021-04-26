@@ -6,8 +6,10 @@ namespace PokeTrader.Core.Repositories.Abstractions
 {
     public interface IPokemonRepository
     {
-        Task<IEnumerable<Pokemon>> Get();
+        Task<IEnumerable<Pokemon>> GetPokemonNames(int quantity, int pageOffset = 0);
 
         Task<Pokemon> Get(int id);
+
+        Task<Pokemon> Get(string name);
     }
 }

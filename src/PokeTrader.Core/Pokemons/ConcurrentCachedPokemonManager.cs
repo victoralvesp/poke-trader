@@ -20,7 +20,6 @@ namespace PokeTrader.Core.Pokemons.Manager
 
         readonly Subject<bool> _syncSubject = new();
 
-
         public ConcurrentCachedPokemonManager(IPokemonRepository repo)
         {
             _repo = repo;
@@ -68,7 +67,7 @@ namespace PokeTrader.Core.Pokemons.Manager
                 EnsureSynchronized();
                 pokemon = _cache.SingleOrDefault(poke => poke.Id == id);
             }
-            
+
             return pokemon;
         }
 
