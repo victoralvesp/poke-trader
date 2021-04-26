@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import AsyncSelect, { makeAsyncSelect } from 'react-select/async';
 import { PokemonSelector } from './PokemonSelector';
 
 
