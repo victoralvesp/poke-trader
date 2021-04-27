@@ -1,11 +1,14 @@
 using PokeTrader.Core.Trader.Models;
 using PokeTrader.Dto.Abstractions;
+using System.ComponentModel.DataAnnotations;
 using static PokeTrader.Core.Trader.Models.TradeInfo;
 
 namespace PokeTrader.Dto.Trader
 {
     public class TradeInfoDto : IDto<TradeInfo>
     {
+        [Key]
+        public int Id { get; set; }
         public Fairness TradeFairness { get; set; }
 
         public TradeParticipantDto First { get; set; }
@@ -17,14 +20,20 @@ namespace PokeTrader.Dto.Trader
         {
             First = First.ToModel(),
             Second = Second.ToModel(),
-            TradeFairness = TradeFairness
+            TradeFairness = TradeFairness,
+            Id = Id
         };
 
         public TradeInfoDto(TradeInfo model)
         {
+            Id = model.Id;
             First = model.First;
             Second = model.Second;
             TradeFairness = model.TradeFairness;
+        }
+
+        public TradeInfoDto()
+        {
         }
 
         public static implicit operator TradeInfoDto(TradeInfo model)

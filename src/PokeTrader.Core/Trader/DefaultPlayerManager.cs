@@ -15,13 +15,17 @@ namespace PokeTrader.Core.Trader
             _repo = repo;
         }
 
-        Task<IEnumerable<string>> IPlayerManager.GetNames()
-        => _repo.GetNames();
+        public Task<IEnumerable<Player>> Get()
+        => _repo.Get();
 
-        public Task Add(Player player)
-        => _repo.Add(player);
+        public async Task<Player> Add(Player player)
+        {
+            // validate if required and check if any data population is needed
+            await _repo.Add(player);
+            return player;
+        }
 
-        Task<Player> IPlayerManager.Get(string name)
+        public Task<Player> Get(string name)
         => _repo.Get(name);
 
     }

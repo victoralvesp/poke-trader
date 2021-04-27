@@ -20,7 +20,11 @@ namespace PokeTrader.Data.Persistence
             _context = context;
         }
 
-        public Task Add(params Trade[] items) => _context.Trades.AddRangeAsync(items.Select(item => (TradeDto)item).ToArray());
+        public async Task Add(params Trade[] items)
+        {
+            await _context.Trades.AddRangeAsync(items.Select(item => (TradeDto)item).ToArray());
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<IEnumerable<Trade>> Get() => (await _context.Trades.ToArrayAsync()).ToModel();
     }

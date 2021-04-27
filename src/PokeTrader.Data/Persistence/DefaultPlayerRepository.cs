@@ -18,7 +18,11 @@ namespace PokeTrader.Data.Persistence
             _context = context;
         }
 
-        public async Task Add(Player player) => await _context.Players.AddAsync(player);
+        public async Task Add(Player player)
+        {
+            await _context.Players.AddAsync(player);
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<Player> Get(string name)
         {
@@ -34,12 +38,12 @@ namespace PokeTrader.Data.Persistence
             return playerDto.ToModel();
         }
 
-        public async Task<IEnumerable<string>> GetNames()
+        public async Task<IEnumerable<Player>> Get()
         {
-            var names = from playerDto in await _context.Players.ToArrayAsync()
-                         select playerDto.Name;
+            var players = from playerDto in await _context.Players.ToArrayAsync()
+                          select playerDto.ToModel();
 
-            return names;
+            return players;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace PokeTrader.Core.Repositories.Abstractions
 {
     public interface IPlayerRepository
     {
-        Task<IEnumerable<string>> GetNames();
+        Task<IEnumerable<Player>> Get();
 
         Task Add(Player player);
 

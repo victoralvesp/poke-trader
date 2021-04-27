@@ -12,7 +12,7 @@ namespace PokeTrader.Data
 {
     public class TradeContext : DbContext
     {
-        public TradeContext([NotNullAttribute] DbContextOptions options) : base(options)
+        public TradeContext([NotNull] DbContextOptions options) : base(options)
         {
         }
 
@@ -23,8 +23,5 @@ namespace PokeTrader.Data
         public DbSet<TradeInfoDto> TradeInfos { get; set; }
 
         public DbSet<TradeParticipantDto> TradeParticipants { get; set; }
-
-
-
     }
 }

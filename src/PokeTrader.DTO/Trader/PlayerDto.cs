@@ -11,6 +11,8 @@ namespace PokeTrader.Dto.Trader
         [Key]
         public string Name { get; set; }
 
+
+
         public PlayerDto(Player model)
         {
             Name = model.Name;

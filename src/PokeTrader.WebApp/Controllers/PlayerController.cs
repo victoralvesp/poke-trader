@@ -23,9 +23,9 @@ namespace PokeTrader.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync(int page = 0)
+        public async Task<IActionResult> GetAsync()
         {
-            var players = await _playerManager.GetNames();
+            var players = await _playerManager.Get();
             return Ok(players);
         }
 

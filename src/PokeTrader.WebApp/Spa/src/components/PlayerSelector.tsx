@@ -1,32 +1,39 @@
 import React from 'react';
-import AsyncSelect from 'react-select/async';
 import { ToastContainer, toast } from 'react-toastify';
-
+import PropTypes from 'prop-types';
+import AsyncCreatableSelect from 'react-select/async-creatable';
 import 'react-toastify/dist/ReactToastify.css';
 import { OptionsType } from 'react-select';
 import playerServInstance, { PlayerService } from '../services/playerService';
 
+type PlayerProps = {
+    placeholder: string,
+    initialValue: string,
+    update: number
+}
 
 const MAXIMUM_NMBR_player = 6;
-export class PlayerSelector extends React.Component {
+export class PlayerSelector extends React.Component<PlayerProps> {
 
     playerService: PlayerService = {} as PlayerService;
-    selectedplayer: string[] = [];
+    selectedplayer: string = "";
     playerOptions: Array<{ label: string, value: string }> = [];
-    playerPlaceholder: ReactNode;
+    playerPlaceholder: string = 'Nome';
 
 
-    constructor(props: { selectedOptions: [] } | Readonly<{ selectedOptions: []}>) {
+    constructor(props: PlayerProps | Readonly<PlayerProps>) {
         super(props);
         this.playerService = playerServInstance;
         this.playerService.getPlayers();
+        this.setState({ inputValue: this.props.initialValue });
         // this.selectedplayer = selectedOptions;
     }
 
     static displayName = PlayerSelector.name;
-    state = { inputValue: '' }
+    state = { inputValue: '', update: 0 }
     handleInputChange(newValue: string) {
         const inputValue = newValue;
+        this.playerService.getPlayers();
         this.setState({ inputValue });
         return inputValue;
     };
@@ -34,7 +41,7 @@ export class PlayerSelector extends React.Component {
         if (typeof params === typeof undefined)
             return;
         
-        let { action, option, removedValue } = params;
+        let { action, option } = params;
         if (action === "select-option" && typeof option !== typeof undefined) {
             if (this.selectedplayer.length == MAXIMUM_NMBR_player) {
                 this.showErrorMessage();
@@ -42,24 +49,17 @@ export class PlayerSelector extends React.Component {
             }
             let { label } = option;
             if (typeof label !== typeof undefined) {
-                this.selectedplayer = [...this.selectedplayer, label];
+                this.setSelectedPlayer(label);
             }
         }
-        else if (action === "remove-value" && typeof removedValue !== typeof undefined) {
-            let { label } = removedValue;
-            if (typeof label !== typeof undefined) {
-                const index = this.selectedplayer.indexOf(label, 0);
-                if (index > -1) {
-                    this.selectedplayer.splice(index, 1);
-                    this.selectedplayer = [...this.selectedplayer];
-                }
-            }
-            console.log(label);
-        }
+
         console.log("action");
         console.log(action);
         console.log("selected");
         console.log(this.selectedplayer);
+    }
+    setSelectedPlayer(newPlayer: string) {
+        this.selectedplayer = newPlayer;
     }
     showErrorMessage() {
         toast.error('Máximo de seis players', {
@@ -77,42 +77,51 @@ export class PlayerSelector extends React.Component {
 
         return new Promise(resolve => {
             if (typeof this.playerService !== typeof undefined) {
-                this.playerService.searchPlayer(inputValue)
+                this.playerService.searchPlayerForSelect(inputValue)
                     .then(value => resolve(value));
             }
         });
     }
-
+    
     render() {
         return (
             <div>
-                <AsyncSelect
+                <AsyncCreatableSelect
                     loadOptions={this.getPlayerOptions.bind(this)}
-                    defaultOptions
-                    cacheOptions
-                    placeholder={this.playerPlaceholder}
-                    closeMenuOnSelect={false}
+                    isValidNewOption={this.isValidNewOption.bind(this)}
+                    formatCreateLabel={this.formatLabel}
+                    onCreateOption={this.save.bind(this)}
+                    placeholder={this.props.placeholder}
                     onInputChange={this.handleInputChange.bind(this)}
-                    noOptionsMessage={this.noOptions}
                     onChange={this.handleSelectChange.bind(this)}
-                    onBlur={this.getOrSave.bind(this)}
-                />
-                <ToastContainer
-                    position="top-right"
-                    autoClose={2000}
-                    hideProgressBar={false}
-                    newestOnTop
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
+                    isOptionSelected={this.checkSelected.bind(this)}
                 />
             </div>
         );
     }
-    getOrSave(): import("react-select").FocusEventHandler {
-        throw new Error('Method not implemented.');
+    isValidNewOption(inputValue: string, value: any, options: readonly any[]): boolean {
+        
+        var player = this.playerService.loadedPlayers.find(p => p.name === inputValue);
+        const isNewPlayer = typeof player === typeof undefined;
+        return isNewPlayer && inputValue.length >= 2;
+    }
+    
+    // async isValidNewOption(inputValue: string): Promise<boolean> {
+    //     var player = await this.playerService.searchPlayerForSelect(inputValue);
+    //     return player.length === 0;
+    // }
+    formatLabel(inputValue: string) : React.ReactNode {
+        return <span>Adicionar {inputValue}</span>
+    }
+    checkSelected(option: any, options: OptionsType<any>) : boolean {
+        if (option.label === this.state.inputValue) {
+            return true;
+        }
+        return false;
+    }
+    async save(inputValue: string) : Promise<void> {
+        const player = await playerServInstance.AddByName(inputValue);
+        this.setSelectedPlayer(player.name);
     }
     optionselected(option: any, options: OptionsType<any>): boolean {
         let { label } = option;
@@ -120,18 +129,7 @@ export class PlayerSelector extends React.Component {
             return false;
         return this.selectedplayer.indexOf(label) >= 0; 
     }
-    maximumReached(option: any, options: OptionsType<any>): boolean {
-        if (this.selectedplayer.length === MAXIMUM_NMBR_player)
-            return true;
-        return false;
-    }
-    refreshOptions(event: React.FocusEvent<HTMLElement>): void {
-        this.playerOptions = [... this.playerService.loadedplayerNames];
-        this.setState({ inputValue: this.state.inputValue, options: this.playerOptions })
-        console.log("playerOptions");
-        console.log(this.playerOptions);
-    }
     noOptions() {
-        return "Nenhum player encontrado"
+        return "Nenhum jogador encontrado"
     }
 }

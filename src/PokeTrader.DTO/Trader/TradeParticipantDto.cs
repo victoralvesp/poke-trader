@@ -1,33 +1,33 @@
 using PokeTrader.Core.Pokemons.Models;
 using PokeTrader.Core.Trader.Models;
 using PokeTrader.Dto.Abstractions;
+using PokeTrader.Dto.Pokemons;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace PokeTrader.Dto.Trader
 {
     public record TradeParticipantDto : IDto<TradeParticipant>
     {
+        [Key]
+        public int Id { get; set; }
         public PlayerDto Trader { get; set; }
 
-        public int[] TradeOfferIds { get; set; } = Array.Empty<int>();
+        public IEnumerable<PokemonDto> TradeOffers { get; set; } = Array.Empty<PokemonDto>();
 
         public TradeParticipant ToModel()
         => new()
         {
             Trader = Trader.ToModel(),
-            TradeOffer = TradeOfferIds.Select(id => BuildUnkownPokemon(id)).ToArray()
-        };
-
-        private static Pokemon BuildUnkownPokemon(int id) => new()
-        {
-            Id = id
+            TradeOffer = TradeOffers.Select(pk => pk.ToModel()).ToArray()
         };
 
         public TradeParticipantDto(TradeParticipant model)
         {
             Trader = model.Trader;
-            TradeOfferIds = model.TradeOffer.Select(poke => poke.Id).ToArray();
+            TradeOffers = model.TradeOffer.Select(poke => (PokemonDto)poke).ToArray();
         }
         public TradeParticipantDto()
         { }

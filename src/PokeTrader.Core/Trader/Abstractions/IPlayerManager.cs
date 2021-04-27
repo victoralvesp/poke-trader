@@ -6,9 +6,9 @@ namespace PokeTrader.Core.Trader.Abstractions
 {
     public interface IPlayerManager
     {
-        Task<IEnumerable<string>> GetNames();
+        Task<IEnumerable<Player>> Get();
 
-        Task Add(Player player);
+        Task<Player> Add(Player player);
 
         Task<Player> Get(string name);
 

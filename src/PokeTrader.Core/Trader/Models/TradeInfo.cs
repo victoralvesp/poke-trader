@@ -7,6 +7,7 @@ namespace PokeTrader.Core.Trader.Models
         public TradeParticipant First { get; init; }
 
         public TradeParticipant Second { get; init; }
+        public int Id { get; init; }
 
         public enum Fairness
         {

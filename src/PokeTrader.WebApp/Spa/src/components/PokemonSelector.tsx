@@ -4,8 +4,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import pokemonServInstance, { PokemonService } from '../services/pokemonService';
 
 import 'react-toastify/dist/ReactToastify.css';
-import { OptionsType } from 'react-select';
-
 
 const MAXIMUM_NMBR_POKEMON = 6;
 export class PokemonSelector extends React.Component {
@@ -19,7 +17,6 @@ export class PokemonSelector extends React.Component {
         super(props);
         this.pokemonService = pokemonServInstance;
         this.pokemonService.getMorePokemon();
-        // this.selectedPokemon = selectedOptions;
     }
 
     static displayName = PokemonSelector.name;
@@ -41,7 +38,7 @@ export class PokemonSelector extends React.Component {
             }
             let { label } = option;
             if (typeof label !== typeof undefined) {
-                this.selectedPokemon = [...this.selectedPokemon, label];
+                this.setSelectedPokemon([...this.selectedPokemon, label]);
                 this.pokemonService.findPokemonByName(label);
             }
         }
@@ -51,7 +48,7 @@ export class PokemonSelector extends React.Component {
                 const index = this.selectedPokemon.indexOf(label, 0);
                 if (index > -1) {
                     this.selectedPokemon.splice(index, 1);
-                    this.selectedPokemon = [...this.selectedPokemon];
+                    this.setSelectedPokemon([...this.selectedPokemon]);
                 }
             }
             console.log(label);
@@ -87,7 +84,6 @@ export class PokemonSelector extends React.Component {
         return (
             <div>
                 <AsyncSelect
-
                     loadOptions={this.getPokemonOptions.bind(this)}
                     defaultOptions
                     isMulti
@@ -114,13 +110,17 @@ export class PokemonSelector extends React.Component {
             </div>
         );
     }
-    optionselected(option: any, options: OptionsType<any>): boolean {
+
+    setSelectedPokemon(newPokemon: string[]): void {
+        this.selectedPokemon = newPokemon;
+    }
+    optionselected(option: any, options: any): boolean {
         let { label } = option;
         if (typeof label === typeof undefined)
             return false;
         return this.selectedPokemon.indexOf(label) >= 0; 
     }
-    maximumReached(option: any, options: OptionsType<any>): boolean {
+    maximumReached(option: any, options: any): boolean {
         if (this.selectedPokemon.length === MAXIMUM_NMBR_POKEMON)
             return true;
         return false;
