@@ -5,8 +5,8 @@ namespace PokeTrader.Core.Resources
     public static class TextResources
     {
 
-        private static string s_unknown = "Desconhecido";
-        private static string s_TraderDefaultText = "Jogador";
+        private static readonly string s_unknown = "Desconhecido";
+        private static readonly string s_TraderDefaultText = "Jogador";
 
         internal static string UnknownPlayer()
             => s_unknown;

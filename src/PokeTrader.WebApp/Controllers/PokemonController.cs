@@ -12,12 +12,10 @@ namespace PokeTrader.WebApp.Controllers
     [Route("[controller]")]
     public class PokemonController : ControllerBase
     {
-        private readonly ILogger<PokemonController> _logger;
         private readonly IPokemonManager _pokemonManager;
 
-        public PokemonController(ILogger<PokemonController> logger, IPokemonManager pokemonManager)
+        public PokemonController(IPokemonManager pokemonManager)
         {
-            _logger = logger;
             _pokemonManager = pokemonManager;
         }
 

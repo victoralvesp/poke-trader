@@ -1,6 +1,12 @@
 ﻿export type PokemonApi = {
     id: number,
-    name: string
+    name: string,
+    base_experience: number,
+}
+export type PokemonDto = {
+    id: number,
+    name: string,
+    baseExperience: number,
 }
 export class PokemonService {
 

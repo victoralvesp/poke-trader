@@ -13,7 +13,7 @@ namespace PokeTrader.Tests.Mocks
 {
     internal static class MockCreate
     {
-        private static Random _random = new();
+        private static readonly Random _random = new();
         public static ITrader NullTrader()
         {
             var obj = Mock.Of<ITrader>(MockBehavior.Loose);

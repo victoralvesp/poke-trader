@@ -14,7 +14,7 @@ namespace PokeTrader.Core.Trader
     where T : notnull
     {
         ConcurrentBag<T> _cache = new();
-        IHistoryRepository<T> _repo;
+        readonly IHistoryRepository<T> _repo;
         private bool _disposed = false;
         internal static readonly TimeSpan _cacheTime = TimeSpan.FromSeconds(.3);
         readonly Subject<bool> _syncSubject = new();
@@ -57,16 +57,6 @@ namespace PokeTrader.Core.Trader
         public IEnumerable<T> Get()
         {
             return _cache.ToArray();
-        }
-
-        private async Task EnsureSynchronized()
-        {
-            var synched = false;
-            _syncSubject.Subscribe((sync) => synched = sync);
-            while(!synched)
-            {
-                await Task.Delay(TimeSpan.FromMilliseconds(100));
-            }
         }
 
         public IEnumerable<T> Get(IFilter<T> trade)

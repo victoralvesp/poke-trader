@@ -12,7 +12,7 @@ namespace PokeTrader.Data.Services
 {
     public class DefaultPokemonRepository : IPokemonRepository
     {
-        PokeApiClient _client;
+        readonly PokeApiClient _client;
 
         public DefaultPokemonRepository(PokeApiClient client)
         {

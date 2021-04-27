@@ -6,14 +6,18 @@ import pokemonServInstance, { PokemonService } from '../services/pokemonService'
 import 'react-toastify/dist/ReactToastify.css';
 
 const MAXIMUM_NMBR_POKEMON = 6;
-export class PokemonSelector extends React.Component {
+type PokemonProps = {
+    onChange?: (selectedPokemon: Array<string>) => void
+}
+
+export class PokemonSelector extends React.Component<PokemonProps> {
 
     pokemonService: PokemonService = {} as PokemonService;
     selectedPokemon: string[] = [];
     pokemonOptions: Array<{ label: string, value: string }> = [];
 
 
-    constructor(props: { selectedOptions: [] } | Readonly<{ selectedOptions: []}>) {
+    constructor(props: PokemonProps | Readonly<PokemonProps>) {
         super(props);
         this.pokemonService = pokemonServInstance;
         this.pokemonService.getMorePokemon();
@@ -29,7 +33,7 @@ export class PokemonSelector extends React.Component {
     handleSelectChange(eventValue: any, params: any): void {
         if (typeof params === typeof undefined)
             return;
-        
+
         let { action, option, removedValue } = params;
         if (action === "select-option" && typeof option !== typeof undefined) {
             if (this.selectedPokemon.length == MAXIMUM_NMBR_POKEMON) {
@@ -113,12 +117,15 @@ export class PokemonSelector extends React.Component {
 
     setSelectedPokemon(newPokemon: string[]): void {
         this.selectedPokemon = newPokemon;
+        if (typeof this.props.onChange !== typeof undefined)
+            this.props.onChange!(newPokemon);
+
     }
     optionselected(option: any, options: any): boolean {
         let { label } = option;
         if (typeof label === typeof undefined)
             return false;
-        return this.selectedPokemon.indexOf(label) >= 0; 
+        return this.selectedPokemon.indexOf(label) >= 0;
     }
     maximumReached(option: any, options: any): boolean {
         if (this.selectedPokemon.length === MAXIMUM_NMBR_POKEMON)

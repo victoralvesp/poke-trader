@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { EventHandler } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import AsyncCreatableSelect from 'react-select/async-creatable';
 import 'react-toastify/dist/ReactToastify.css';
 import { OptionsType } from 'react-select';
-import playerServInstance, { PlayerService } from '../services/playerService';
+import playerServInstance, { PlayerDto, PlayerService } from '../services/playerService';
 
 type PlayerProps = {
     placeholder: string,
-    initialValue: string,
-    update: number
+    initialValue?: string,
+    onChange?: (selectedPlayers: string | null) => void
 }
 
 const MAXIMUM_NMBR_player = 6;
@@ -28,6 +28,7 @@ export class PlayerSelector extends React.Component<PlayerProps> {
         this.setState({ inputValue: this.props.initialValue });
         // this.selectedplayer = selectedOptions;
     }
+
 
     static displayName = PlayerSelector.name;
     state = { inputValue: '', update: 0 }
@@ -59,7 +60,17 @@ export class PlayerSelector extends React.Component<PlayerProps> {
         console.log(this.selectedplayer);
     }
     setSelectedPlayer(newPlayer: string) {
+        
         this.selectedplayer = newPlayer;
+        if (newPlayer.length < 2) {
+            if (typeof this.props.onChange !== typeof undefined)
+                this.props.onChange!(null);
+        }
+        else {
+            if (typeof this.props.onChange !== typeof undefined)
+            this.props.onChange!(newPlayer);
+        }
+            
     }
     showErrorMessage() {
         toast.error('Máximo de seis players', {

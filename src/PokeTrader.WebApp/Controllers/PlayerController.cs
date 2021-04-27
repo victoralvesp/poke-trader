@@ -13,12 +13,10 @@ namespace PokeTrader.WebApp.Controllers
     [Route("[controller]")]
     public class PlayerController : ControllerBase
     {
-        private readonly ILogger<PlayerController> _logger;
         private readonly IPlayerManager _playerManager;
 
-        public PlayerController(ILogger<PlayerController> logger, IPlayerManager PlayerManager)
+        public PlayerController(IPlayerManager PlayerManager)
         {
-            _logger = logger;
             _playerManager = PlayerManager;
         }
 

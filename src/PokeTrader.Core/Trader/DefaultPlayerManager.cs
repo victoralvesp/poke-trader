@@ -8,7 +8,7 @@ namespace PokeTrader.Core.Trader
 {
     public class DefaultPlayerManager : IPlayerManager
     {
-        IPlayerRepository _repo;
+        readonly IPlayerRepository _repo;
 
         public DefaultPlayerManager(IPlayerRepository repo)
         {

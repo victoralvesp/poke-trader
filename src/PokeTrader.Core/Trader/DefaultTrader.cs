@@ -10,8 +10,8 @@ namespace PokeTrader.Core.Trader
 {
     public class DefaultTrader : ITrader
     {
-        ICollectionMeasurer<Pokemon> _comparer;
-        IHistory<Trade> _history;
+        readonly ICollectionMeasurer<Pokemon> _comparer;
+        readonly IHistory<Trade> _history;
 
         public DefaultTrader(ICollectionMeasurer<Pokemon> comparer, IHistory<Trade> manager)
         {

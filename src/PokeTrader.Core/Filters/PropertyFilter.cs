@@ -6,7 +6,7 @@ namespace PokeTrader.Core.Filters
 {
     internal class LambdaFilter<T> : IFilter<T> where T : notnull
     {
-        private Func<T, bool> _passingFuncition;
+        private readonly Func<T, bool> _passingFuncition;
 
         public LambdaFilter(Func<T, bool> passingFuncition)
         {
@@ -19,6 +19,6 @@ namespace PokeTrader.Core.Filters
         }
 
         public static explicit operator LambdaFilter<T>(Func<T, bool> passingFuncition) =>
-        new LambdaFilter<T>(passingFuncition);
+        new(passingFuncition);
     }
 }

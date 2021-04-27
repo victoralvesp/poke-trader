@@ -1,9 +1,10 @@
 import playerServInstance,{ PlayerDto } from "./playerService";
+import pokemonServInstance, { PokemonApi, PokemonDto } from "./pokemonService";
 
 export type TradeParticipantDto = {
     trader: PlayerDto,
 
-    tradeOfferIds: number[],
+    tradeOffers: PokemonDto[],
 }
 
 export type TradeInfoDto = {
@@ -41,12 +42,27 @@ export class TradeService {
         return info;
     }
 
-    async convertToParticipant(playerName: string, playerOffers: number[]) : Promise<TradeParticipantDto>{
+    async convertToParticipant(playerName: string, playerOffersNames: string[]) : Promise<TradeParticipantDto>{
         const player: PlayerDto = await playerServInstance.getPlayer(playerName);
+        const playerOffers: PokemonApi[] = [];
+        playerOffersNames.forEach(async pk => {
+            const poke = await pokemonServInstance.findPokemonByName(pk);
+            if (poke === null)
+                return;
+            playerOffers.push(poke!);
+        });
+        const pokemons: PokemonDto[] = playerOffers.map(pk => this.convert(pk))
         return {
             trader: player,
-            tradeOfferIds: playerOffers
+            tradeOffers: pokemons
         };
+    }
+    convert(pk: PokemonApi): PokemonDto {
+        return {
+            id : pk.id,
+            name: pk.name,
+            baseExperience : pk.base_experience
+        }
     }
 
     constructor() {
