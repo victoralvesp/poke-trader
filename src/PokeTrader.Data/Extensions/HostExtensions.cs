@@ -22,6 +22,8 @@ namespace PokeTrader.Core.Extensions
                     .AddScoped<IHistory<Trade>, ConcurrentCachedHistory<Trade>>()
                     .AddScoped<IHistoryRepository<Trade>, DefaultTradeHistoryRepository>()
                     .AddScoped<IPokemonManager, DefaultPokemonManager>()
+                    .AddScoped<IPlayerManager, DefaultPlayerManager>()
+                    .AddScoped<IPlayerRepository, DefaultPlayerRepository>()
                     .AddScoped<IPokemonRepository, DefaultPokemonRepository>()
                     .AddSingleton<PokeApiClient>();
 

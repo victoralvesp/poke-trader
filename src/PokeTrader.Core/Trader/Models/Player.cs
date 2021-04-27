@@ -5,7 +5,6 @@ namespace PokeTrader.Core.Trader.Models
 {
     public record Player
     {
-        public Guid Id { get; init; } = Guid.NewGuid();
         public string Name { get; init; } = TextResources.UnknownPlayer();
 
         public Player(int tradeOrder)

@@ -1,10 +1,10 @@
-﻿using PokeTrader.Core.Trader.Models;
+using PokeTrader.Core.Trader.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace PokeTrader.Core.Repositories.Abstractions
+namespace PokeTrader.Core.Trader.Abstractions
 {
-    public interface IPlayerRepository
+    public interface IPlayerManager
     {
         Task<IEnumerable<string>> GetNames();
 
@@ -12,6 +12,5 @@ namespace PokeTrader.Core.Repositories.Abstractions
 
         Task<Player> Get(string name);
 
-        Task<Player> Get(int id);
     }
 }

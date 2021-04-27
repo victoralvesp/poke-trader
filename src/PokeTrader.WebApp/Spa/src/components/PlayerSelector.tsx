@@ -1,28 +1,29 @@
 import React from 'react';
 import AsyncSelect from 'react-select/async';
 import { ToastContainer, toast } from 'react-toastify';
-import pokemonServInstance, { PokemonService } from '../services/pokemonService';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { OptionsType } from 'react-select';
+import playerServInstance, { PlayerService } from '../services/playerService';
 
 
-const MAXIMUM_NMBR_POKEMON = 6;
-export class PokemonSelector extends React.Component {
+const MAXIMUM_NMBR_player = 6;
+export class PlayerSelector extends React.Component {
 
-    pokemonService: PokemonService = {} as PokemonService;
-    selectedPokemon: string[] = [];
-    pokemonOptions: Array<{ label: string, value: string }> = [];
+    playerService: PlayerService = {} as PlayerService;
+    selectedplayer: string[] = [];
+    playerOptions: Array<{ label: string, value: string }> = [];
+    playerPlaceholder: ReactNode;
 
 
     constructor(props: { selectedOptions: [] } | Readonly<{ selectedOptions: []}>) {
         super(props);
-        this.pokemonService = pokemonServInstance;
-        this.pokemonService.getMorePokemon();
-        // this.selectedPokemon = selectedOptions;
+        this.playerService = playerServInstance;
+        this.playerService.getPlayers();
+        // this.selectedplayer = selectedOptions;
     }
 
-    static displayName = PokemonSelector.name;
+    static displayName = PlayerSelector.name;
     state = { inputValue: '' }
     handleInputChange(newValue: string) {
         const inputValue = newValue;
@@ -35,23 +36,22 @@ export class PokemonSelector extends React.Component {
         
         let { action, option, removedValue } = params;
         if (action === "select-option" && typeof option !== typeof undefined) {
-            if (this.selectedPokemon.length == MAXIMUM_NMBR_POKEMON) {
+            if (this.selectedplayer.length == MAXIMUM_NMBR_player) {
                 this.showErrorMessage();
                 return;
             }
             let { label } = option;
             if (typeof label !== typeof undefined) {
-                this.selectedPokemon = [...this.selectedPokemon, label];
-                this.pokemonService.findPokemonByName(label);
+                this.selectedplayer = [...this.selectedplayer, label];
             }
         }
         else if (action === "remove-value" && typeof removedValue !== typeof undefined) {
             let { label } = removedValue;
             if (typeof label !== typeof undefined) {
-                const index = this.selectedPokemon.indexOf(label, 0);
+                const index = this.selectedplayer.indexOf(label, 0);
                 if (index > -1) {
-                    this.selectedPokemon.splice(index, 1);
-                    this.selectedPokemon = [...this.selectedPokemon];
+                    this.selectedplayer.splice(index, 1);
+                    this.selectedplayer = [...this.selectedplayer];
                 }
             }
             console.log(label);
@@ -59,10 +59,10 @@ export class PokemonSelector extends React.Component {
         console.log("action");
         console.log(action);
         console.log("selected");
-        console.log(this.selectedPokemon);
+        console.log(this.selectedplayer);
     }
     showErrorMessage() {
-        toast.error('Máximo de seis pokemons', {
+        toast.error('Máximo de seis players', {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,
@@ -73,11 +73,11 @@ export class PokemonSelector extends React.Component {
         });
     }
 
-    getPokemonOptions(inputValue: string): Promise<any> {
+    getPlayerOptions(inputValue: string): Promise<any> {
 
         return new Promise(resolve => {
-            if (typeof this.pokemonService !== typeof undefined) {
-                this.pokemonService.searchPokemon(inputValue)
+            if (typeof this.playerService !== typeof undefined) {
+                this.playerService.searchPlayer(inputValue)
                     .then(value => resolve(value));
             }
         });
@@ -87,18 +87,15 @@ export class PokemonSelector extends React.Component {
         return (
             <div>
                 <AsyncSelect
-
-                    loadOptions={this.getPokemonOptions.bind(this)}
+                    loadOptions={this.getPlayerOptions.bind(this)}
                     defaultOptions
-                    isMulti
-                    isOptionSelected={this.optionselected.bind(this)}
                     cacheOptions
-                    placeholder="Selecione os Pokemons..."
+                    placeholder={this.playerPlaceholder}
                     closeMenuOnSelect={false}
-                    isOptionDisabled={this.maximumReached.bind(this)}
                     onInputChange={this.handleInputChange.bind(this)}
                     noOptionsMessage={this.noOptions}
                     onChange={this.handleSelectChange.bind(this)}
+                    onBlur={this.getOrSave.bind(this)}
                 />
                 <ToastContainer
                     position="top-right"
@@ -114,24 +111,27 @@ export class PokemonSelector extends React.Component {
             </div>
         );
     }
+    getOrSave(): import("react-select").FocusEventHandler {
+        throw new Error('Method not implemented.');
+    }
     optionselected(option: any, options: OptionsType<any>): boolean {
         let { label } = option;
         if (typeof label === typeof undefined)
             return false;
-        return this.selectedPokemon.indexOf(label) >= 0; 
+        return this.selectedplayer.indexOf(label) >= 0; 
     }
     maximumReached(option: any, options: OptionsType<any>): boolean {
-        if (this.selectedPokemon.length === MAXIMUM_NMBR_POKEMON)
+        if (this.selectedplayer.length === MAXIMUM_NMBR_player)
             return true;
         return false;
     }
     refreshOptions(event: React.FocusEvent<HTMLElement>): void {
-        this.pokemonOptions = [... this.pokemonService.loadedPokemonNames];
-        this.setState({ inputValue: this.state.inputValue, options: this.pokemonOptions })
-        console.log("pokemonOptions");
-        console.log(this.pokemonOptions);
+        this.playerOptions = [... this.playerService.loadedplayerNames];
+        this.setState({ inputValue: this.state.inputValue, options: this.playerOptions })
+        console.log("playerOptions");
+        console.log(this.playerOptions);
     }
     noOptions() {
-        return "Nenhum pokemon encontrado"
+        return "Nenhum player encontrado"
     }
 }
