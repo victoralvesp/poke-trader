@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Badge, Button, Col, Container, Form, FormLabel, Row } from 'react-bootstrap';
+import { Alert, Badge, Button, Card, Col, Container, Form, FormLabel, Row } from 'react-bootstrap';
 import { PokemonSelector } from './PokemonSelector';
 import { PlayerSelector } from './PlayerSelector';
 import tradeServInstance, { Fairness, TradeInfoDto } from '../services/tradeService';
@@ -38,31 +38,42 @@ export class Trade extends Component {
     }
 
     render() {
-        const fairnessSection = this.state.showFairness ? <Row className="justify-content-md-center"> <h3><Badge variant="primary">{this.state.fairnessText}</Badge></h3> </Row>
+        const fairnessSection = this.state.showFairness ? <Alert className="justify-content-md-center"> <h3><Badge variant="primary">{this.state.fairnessText}</Badge></h3> </Alert>
             : undefined;
         const firstParticipantScore = this.firstScore;
         const secondParticipantScore = this.secondScore;
-        const firstScoreSection = this.state.showFairness ? <Row className="justify-content-md-center"> <h4><Badge variant="primary">{firstParticipantScore}</Badge> </h4> </Row>
+        const firstScoreSection = this.state.showFairness ? <Card.Footer className="justify-content-md-center"> <h4><Badge variant="primary">{firstParticipantScore}</Badge> </h4> </Card.Footer>
             : undefined;
-        const secondScoreSection = this.state.showFairness ? <Row className="justify-content-md-center"> <h4><Badge variant="primary">{secondParticipantScore}</Badge> </h4> </Row>
+        const secondScoreSection = this.state.showFairness ? <Card.Footer className="justify-content-md-center"> <h4><Badge variant="primary">{secondParticipantScore}</Badge> </h4> </Card.Footer>
             : undefined;
         return (
             <Container fluid>
                 <Row className="justify-content-md-right">
-                    <Col>
+                    <Alert variant="light">
                         <Button variant="outline-primary" size="lg" onClick={this.nextTradeState.bind(this)}>{this.state.tradeText}</Button>
-                    </Col>
+                    </Alert>
                 </Row>
                 <Row>
                     <Col>
-                        {firstScoreSection}
-                        <PlayerSelector onChange={this.handleFirstPlayerChange.bind(this)} placeholder="Primeiro Jogador" initialValue="Jogador 1" />
-                        <PokemonSelector onChange={this.handleFirstPlayerPokemonChange.bind(this)} key="first" />
+                        <Card>
+                            <Card.Body>
+                                <PlayerSelector onChange={this.handleFirstPlayerChange.bind(this)} placeholder="Primeiro Jogador" initialValue="Jogador 1" />
+                                <br />
+                                <PokemonSelector onChange={this.handleFirstPlayerPokemonChange.bind(this)} key="first" />
+                            </Card.Body>
+                            {firstScoreSection}
+                        </Card>
                     </Col>
                     <Col>
-                        {secondScoreSection}
-                        <PlayerSelector onChange={this.handleSecondPlayerChange.bind(this)} placeholder="Segundo Jogador" initialValue="Jogador 2" />
-                        <PokemonSelector onChange={this.handleSecondPlayerPokemonChange.bind(this)} key="second" />
+                        <Card>
+                            <Card.Body>
+                                <PlayerSelector onChange={this.handleSecondPlayerChange.bind(this)} placeholder="Segundo Jogador" initialValue="Jogador 2" />
+                                <br />
+                                <PokemonSelector onChange={this.handleSecondPlayerPokemonChange.bind(this)} key="second" />
+                            </Card.Body>
+                            {secondScoreSection}
+
+                        </Card>
                     </Col>
                 </Row>
                 {fairnessSection}
