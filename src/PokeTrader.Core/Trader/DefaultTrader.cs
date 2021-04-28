@@ -26,8 +26,8 @@ namespace PokeTrader.Core.Trader
 
         public TradeInfo Check(TradeParticipant firstTrader, TradeParticipant secondTrader)
         {
-            var firstOfferValue = _comparer.Measure(firstTrader.TradeOffer);
-            var secondOfferValue = _comparer.Measure(secondTrader.TradeOffer);
+            var firstOfferValue = _comparer.Measure(firstTrader.TradeOffers);
+            var secondOfferValue = _comparer.Measure(secondTrader.TradeOffers);
 
             return CreateInfo(firstTrader, secondTrader, firstOfferValue, secondOfferValue);
         }
@@ -49,10 +49,10 @@ namespace PokeTrader.Core.Trader
         => measureDistance switch
         {
             var x when Math.Abs(x) <= FairnessTierSize => TradeInfo.Fairness.Fair,
-            var x when x <= 2 * FairnessTierSize => TradeInfo.Fairness.SlightlyFavorsFirst,
-            var x when x >= 2 * FairnessTierSize => TradeInfo.Fairness.FavorsFirst,
-            var x when x >= -2 * FairnessTierSize => TradeInfo.Fairness.SlightlyFavorsSecond,
-            var x when x <= -2 * FairnessTierSize => TradeInfo.Fairness.FavorsSecond,
+            var x when x > 0 && x <= 2 * FairnessTierSize => TradeInfo.Fairness.SlightlyFavorsFirst,
+            var x when x > 0 && x >= 2 * FairnessTierSize => TradeInfo.Fairness.FavorsFirst,
+            var x when x < 0 && x >= -2 * FairnessTierSize => TradeInfo.Fairness.SlightlyFavorsSecond,
+            var x when x < 0 && x <= -2 * FairnessTierSize => TradeInfo.Fairness.FavorsSecond,
             _ => throw new InvalidMeasureException()
         };
 

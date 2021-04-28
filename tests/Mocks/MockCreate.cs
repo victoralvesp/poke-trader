@@ -111,7 +111,7 @@ namespace PokeTrader.Tests.Mocks
         => new()
         {
             Trader = new() { Name = RandomString() },
-            TradeOffer = new[] { RandomPokemon() }
+            TradeOffers = new[] { RandomPokemon() }
         };
 
         public static Pokemon RandomPokemon()

@@ -10,11 +10,11 @@ namespace PokeTrader.WebApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class HistoryController : Controller
+    public class TradeHistoryController : Controller
     {
         IHistory<Trade> _history;
 
-        public HistoryController(IHistory<Trade> history)
+        public TradeHistoryController(IHistory<Trade> history)
         {
             _history = history;
         }

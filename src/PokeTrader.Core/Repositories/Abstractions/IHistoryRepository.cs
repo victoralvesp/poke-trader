@@ -6,7 +6,11 @@ namespace PokeTrader.Core.Repositories.Abstractions
     public interface IHistoryRepository<T>
     where T : notnull
     {
-        Task<IEnumerable<T>> Get();
-        Task Add(params T[] item);
+        Task<IEnumerable<T>> GetAsync();
+        Task AddAsync(T item);
+
+        IEnumerable<T> Get();
+
+        void Add(T item);
     }
 }

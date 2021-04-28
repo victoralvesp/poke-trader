@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PokeTrader.Core.Trader.Abstractions;
+using PokeTrader.Core.Trader.Models;
 using PokeTrader.Dto.Trader;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,15 @@ namespace PokeTrader.WebApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TradeController : Controller
+    public class TradesController : Controller
     {
-        ITrader _trader;
+        private readonly ITrader _trader;
+        private readonly IHistory<Trade> _history;
 
-        public TradeController(ITrader trader)
+        public TradesController(ITrader trader, IHistory<Trade> history)
         {
             _trader = trader;
+            _history = history;
         }
 
         [HttpPost]
@@ -50,6 +53,13 @@ namespace PokeTrader.WebApp.Controllers
             {
                 return BadRequest(ex);
             }
+        }
+
+        [HttpGet("history")]
+        public IActionResult GetAsync()
+        {
+            var trades = _history.Get();
+            return Ok(trades);
         }
     }
 }

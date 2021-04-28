@@ -1,40 +1,34 @@
 import React, { Component } from 'react';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import { PokemonSelector } from './PokemonSelector';
 import { PlayerSelector } from './PlayerSelector';
-import tradeServInstance, { Fairness, TradeInfoDto } from '../services/tradeService';
+import tradeServInstance, { Fairness, TradeDto, TradeInfoDto } from '../services/tradeService';
+import HistoryItem from './HistoryItem';
 
 export class History extends Component {
     static displayName = History.name;
     constructor(props: {} | Readonly<{}>) {
         super(props);
     }
+    state = { history: [] };
+    async componentDidMount() {
+        const history = await tradeServInstance.getHistory();
+        this.setState({ history: history });
+    }
 
     render() {
-        
+
+        let history = this.state.history;
+        if (typeof history === typeof undefined || typeof history.map === typeof undefined)
+            history = [];
         return (
-            <Container fluid>
-                <Row className="justify-content-md-right">
-                    <Col>
-                        <Button variant="outline-primary" size="lg" onClick={this.nextTradeState}>{this.state.tradeText}</Button>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <PlayerSelector onChange={this.handleFirstPlayerChange} placeholder="Primeiro Jogador" initialValue="Jogador 1" />
-                        <PokemonSelector onChange={this.handleFirstPlayerPokemonChange} key="first" />
-                    </Col>
-                    <Col>
-                        <PlayerSelector onChange={this.handleSecondPlayerChange} placeholder="Segundo Jogador" initialValue="Jogador 2" />
-                        <PokemonSelector onChange={this.handleSecondPlayerPokemonChange} key="second" />
-                    </Col>
-                </Row>
-                
-                <Row className="justify-content-md-center">
-                    <span>{this.state.fairnessText}</span>
-                </Row>
-            </Container>
+            <ListGroup>
+                {history.map((hst, i) => {
+                    return <HistoryItem tradeHistory={hst} key={i} />
+                })}
+            </ListGroup>
         );
     }
 
 }
+

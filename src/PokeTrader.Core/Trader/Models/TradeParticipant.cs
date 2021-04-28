@@ -12,6 +12,6 @@ namespace PokeTrader.Core.Trader.Models
         [Required]
         [MaxLength(6)]
         [MinLength(1)]
-        public Pokemon[] TradeOffer { get; init; } = Array.Empty<Pokemon>();
+        public Pokemon[] TradeOffers { get; init; } = Array.Empty<Pokemon>();
     }
 }

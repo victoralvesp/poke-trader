@@ -23,13 +23,18 @@ export type TradeDto = {
 
 
 export class TradeService {
+    async getHistory() : Promise<Array<TradeDto>> {
+        const response = await fetch("trades/history");
+        const trades = (await response.json()) as Array<TradeDto>;
+        return trades;
+    }
     async makeTrade(tradeInfo: TradeInfoDto) : Promise<TradeDto> {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(tradeInfo)
         };
-        const response = await fetch("trade", requestOptions);
+        const response = await fetch("trades", requestOptions);
         const trade = (await response.json()) as TradeDto;
         return trade;
     }
@@ -39,7 +44,7 @@ export class TradeService {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ first: firstParticipant, second: secondParticipant })
         };
-        const response = await fetch("trade/approve", requestOptions);
+        const response = await fetch("trades/approve", requestOptions);
         const info = (await response.json()) as TradeInfoDto;
         return info;
     }

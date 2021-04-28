@@ -1,6 +1,7 @@
 using PokeTrader.Core.Trader.Models;
 using PokeTrader.Dto.Abstractions;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static PokeTrader.Core.Trader.Models.TradeInfo;
 
 namespace PokeTrader.Dto.Trader
@@ -11,12 +12,14 @@ namespace PokeTrader.Dto.Trader
         public int Id { get; set; }
         public Fairness TradeFairness { get; set; }
 
+        [ForeignKey(nameof(FirstParticipantId))]
         public TradeParticipantDto First { get; set; }
+        public int FirstParticipantId { get; set; }
 
         public int FirstScore { get; set; }
-
+        [ForeignKey(nameof(SecondParticipantId))]
         public TradeParticipantDto Second { get; set; }
-
+        public int SecondParticipantId { get; set; }
         public int SecondScore { get; set; }
 
         public TradeInfo ToModel()

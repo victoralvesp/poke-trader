@@ -34,14 +34,14 @@ namespace PokeTrader.Core.Trader
         {
             while(!_disposed)
             {
-                var persistedHistory = await _repo.Get();
+                var persistedHistory = await _repo.GetAsync();
                 var notPersisted = _cache.Where(t => !persistedHistory.Any(u => u.Equals(t))).ToArray();
                 var notCached = persistedHistory.Where(t => !_cache.Any(u => u.Equals(t))).ToArray();
                 if (notPersisted.Any() || notCached.Any())
                 {
                     _syncSubject.OnNext(false);
 
-                    await _repo.Add(notPersisted);
+                    //await _repo.AddAsync(notPersisted);
                     _cache = new(_cache.ToArray().Concat(notCached).ToArray());
                 }
                 _syncSubject.OnNext(true);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PokeTrader.Core.Trader.Models;
+using PokeTrader.Dto.Pokemons;
 using PokeTrader.Dto.Trader;
 using System;
 using System.Collections.Generic;
@@ -23,5 +24,7 @@ namespace PokeTrader.Data
         public DbSet<TradeInfoDto> TradeInfos { get; set; }
 
         public DbSet<TradeParticipantDto> TradeParticipants { get; set; }
+
+        public DbSet<PokemonDto> Pokemons { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace PokeTrader.Core.Extensions
         {
             services.AddScoped<ITrader, DefaultTrader>()
                     .AddScoped<ICollectionMeasurer<Pokemon>, BaseExperienceMeasure>()
-                    .AddScoped<IHistory<Trade>, ConcurrentCachedHistory<Trade>>()
+                    .AddScoped<IHistory<Trade>, DefaultHistory<Trade>>()
                     .AddScoped<IHistoryRepository<Trade>, DefaultTradeHistoryRepository>()
                     .AddScoped<IPokemonManager, DefaultPokemonManager>()
                     .AddScoped<IPlayerManager, DefaultPlayerManager>()
