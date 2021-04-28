@@ -25,13 +25,13 @@ namespace PokeTrader.Tests
             var trade = MockCreate.RandomTrade();
             var outoflocationTrade = MockCreate.RandomTrade();
 
-            _ = repo.Add(outoflocationTrade);
+            repo.Add(outoflocationTrade);
             _history.Add(trade);
 
             await Task.Delay(TimeSpan.FromSeconds(2));
             //await Task.Delay(TimeSpan.FromMilliseconds(50));
 
-            var expected = await repo.Get();
+            var expected = await repo.GetAsync();
             var actual = _history.Get();
             CollectionAssert.AreEquivalent(expected, actual);
         } 

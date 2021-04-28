@@ -36,10 +36,10 @@ namespace PokeTrader.Tests.Mocks
 
 
             mock.Setup(rp => rp.Get())
-                .ReturnsAsync(list.AsEnumerable());
-            mock.Setup(rp => rp.Add(It.IsAny<U[]>()))
-                .Callback<U[]>(u => list.AddRange(u))
-                .Returns(Task.CompletedTask);
+                .Returns(list.AsEnumerable());
+            mock.Setup(rp => rp.Add(It.IsAny<U>()))
+                .Callback<U>(u => list.Add(u))
+                ;
     
             return repo;
         }
