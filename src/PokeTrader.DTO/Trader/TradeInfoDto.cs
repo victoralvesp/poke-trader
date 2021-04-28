@@ -13,7 +13,11 @@ namespace PokeTrader.Dto.Trader
 
         public TradeParticipantDto First { get; set; }
 
+        public int FirstScore { get; set; }
+
         public TradeParticipantDto Second { get; set; }
+
+        public int SecondScore { get; set; }
 
         public TradeInfo ToModel()
         => new()
@@ -21,6 +25,8 @@ namespace PokeTrader.Dto.Trader
             First = First.ToModel(),
             Second = Second.ToModel(),
             TradeFairness = TradeFairness,
+            FirstScore = FirstScore,
+            SecondScore = SecondScore,
             Id = Id
         };
 
@@ -30,6 +36,8 @@ namespace PokeTrader.Dto.Trader
             First = model.First;
             Second = model.Second;
             TradeFairness = model.TradeFairness;
+            FirstScore = model.FirstScore;
+            SecondScore = model.SecondScore;
         }
 
         public TradeInfoDto()

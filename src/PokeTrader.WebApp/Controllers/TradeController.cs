@@ -38,6 +38,10 @@ namespace PokeTrader.WebApp.Controllers
         {
             try
             {
+                if(!TryValidateModel(dto))
+                {
+                    BadRequest("invalid model");
+                }
                 var (first, second) = dto.ToModel();
                 var info = _trader.Check(first, second);
                 return Ok(info);

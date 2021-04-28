@@ -95,6 +95,7 @@ export class PokemonSelector extends React.Component<PokemonProps> {
                     cacheOptions
                     placeholder="Selecione os Pokemons..."
                     closeMenuOnSelect={false}
+                    tabSelectsValue={false}
                     isOptionDisabled={this.maximumReached.bind(this)}
                     onInputChange={this.handleInputChange.bind(this)}
                     noOptionsMessage={this.noOptions}

@@ -1,10 +1,8 @@
-import React, { EventHandler } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import PropTypes from 'prop-types';
+import React from 'react';
 import AsyncCreatableSelect from 'react-select/async-creatable';
 import 'react-toastify/dist/ReactToastify.css';
 import { OptionsType } from 'react-select';
-import playerServInstance, { PlayerDto, PlayerService } from '../services/playerService';
+import playerServInstance, { PlayerService } from '../services/playerService';
 
 type PlayerProps = {
     placeholder: string,
@@ -12,26 +10,27 @@ type PlayerProps = {
     onChange?: (selectedPlayers: string | null) => void
 }
 
-const MAXIMUM_NMBR_player = 6;
 export class PlayerSelector extends React.Component<PlayerProps> {
 
+    static displayName = PlayerSelector.name;
     playerService: PlayerService = {} as PlayerService;
     selectedplayer: string = "";
     playerOptions: Array<{ label: string, value: string }> = [];
     playerPlaceholder: string = 'Nome';
-
+    state = { inputValue: '', selectedPlayer: '' }
+    
 
     constructor(props: PlayerProps | Readonly<PlayerProps>) {
         super(props);
         this.playerService = playerServInstance;
         this.playerService.getPlayers();
-        this.setState({ inputValue: this.props.initialValue });
-        // this.selectedplayer = selectedOptions;
+        
     }
 
+    componentDidMount() {
+        this.setState({ inputValue: this.props.initialValue, selectedPlayer: this.state.selectedPlayer });
+    }
 
-    static displayName = PlayerSelector.name;
-    state = { inputValue: '', update: 0 }
     handleInputChange(newValue: string) {
         const inputValue = newValue;
         this.playerService.getPlayers();
@@ -43,45 +42,28 @@ export class PlayerSelector extends React.Component<PlayerProps> {
             return;
         
         let { action, option } = params;
-        if (action === "select-option" && typeof option !== typeof undefined) {
-            if (this.selectedplayer.length == MAXIMUM_NMBR_player) {
-                this.showErrorMessage();
-                return;
-            }
-            let { label } = option;
+        if (action === "select-option" && typeof eventValue !== typeof undefined) {
+            let { label } = eventValue;
             if (typeof label !== typeof undefined) {
                 this.setSelectedPlayer(label);
             }
         }
-
-        console.log("action");
-        console.log(action);
-        console.log("selected");
-        console.log(this.selectedplayer);
     }
     setSelectedPlayer(newPlayer: string) {
         
         this.selectedplayer = newPlayer;
         if (newPlayer.length < 2) {
-            if (typeof this.props.onChange !== typeof undefined)
+            if (typeof this.props.onChange !== typeof undefined) {
                 this.props.onChange!(null);
+            }
         }
         else {
-            if (typeof this.props.onChange !== typeof undefined)
-            this.props.onChange!(newPlayer);
+            if (typeof this.props.onChange !== typeof undefined) {
+                this.props.onChange!(newPlayer);
+            }
         }
-            
-    }
-    showErrorMessage() {
-        toast.error('Máximo de seis players', {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
+        this.setState({ inputValue: newPlayer, selectedPlayer: newPlayer })
+        
     }
 
     getPlayerOptions(inputValue: string): Promise<any> {
@@ -99,6 +81,8 @@ export class PlayerSelector extends React.Component<PlayerProps> {
             <div>
                 <AsyncCreatableSelect
                     loadOptions={this.getPlayerOptions.bind(this)}
+                    defaultOptions
+                    cacheOptions
                     isValidNewOption={this.isValidNewOption.bind(this)}
                     formatCreateLabel={this.formatLabel}
                     onCreateOption={this.save.bind(this)}
@@ -111,16 +95,11 @@ export class PlayerSelector extends React.Component<PlayerProps> {
         );
     }
     isValidNewOption(inputValue: string, value: any, options: readonly any[]): boolean {
-        
         var player = this.playerService.loadedPlayers.find(p => p.name === inputValue);
         const isNewPlayer = typeof player === typeof undefined;
         return isNewPlayer && inputValue.length >= 2;
     }
     
-    // async isValidNewOption(inputValue: string): Promise<boolean> {
-    //     var player = await this.playerService.searchPlayerForSelect(inputValue);
-    //     return player.length === 0;
-    // }
     formatLabel(inputValue: string) : React.ReactNode {
         return <span>Adicionar {inputValue}</span>
     }

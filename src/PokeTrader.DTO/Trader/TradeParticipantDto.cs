@@ -13,8 +13,12 @@ namespace PokeTrader.Dto.Trader
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public PlayerDto Trader { get; set; }
 
+        [Required]
+        [MaxLength(6)]
+        [MinLength(1)]
         public IEnumerable<PokemonDto> TradeOffers { get; set; } = Array.Empty<PokemonDto>();
 
         public TradeParticipant ToModel()

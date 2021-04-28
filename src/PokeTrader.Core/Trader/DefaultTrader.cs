@@ -29,15 +29,18 @@ namespace PokeTrader.Core.Trader
             var firstOfferValue = _comparer.Measure(firstTrader.TradeOffer);
             var secondOfferValue = _comparer.Measure(secondTrader.TradeOffer);
 
-            return CreateInfo(firstTrader, secondTrader, firstOfferValue - secondOfferValue);
+            return CreateInfo(firstTrader, secondTrader, firstOfferValue, secondOfferValue);
         }
 
-        private TradeInfo CreateInfo(TradeParticipant firstTrader, TradeParticipant secondTrader, int measureDistance)
+        private TradeInfo CreateInfo(TradeParticipant firstTrader, TradeParticipant secondTrader, int firstOfferValue, int secondOfferValue)
         {
+            var measureDistance = firstOfferValue - secondOfferValue;
             return new TradeInfo
             {
                 First = firstTrader,
+                FirstScore = firstOfferValue,
                 Second = secondTrader,
+                SecondScore = secondOfferValue,
                 TradeFairness = DefineFairness(measureDistance)
             };
         }
